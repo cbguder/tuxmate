@@ -1,0 +1,16 @@
+<Combine name="TuxMate" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="TuxMate" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="TuxMate" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="TuxMate" single="True">
+    <Execute type="None" entry="TuxMate" />
+  </StartMode>
+  <Entries>
+    <Entry filename="TuxMate/TuxMate.mdp" />
+  </Entries>
+</Combine>
