@@ -37,8 +37,6 @@ namespace TuxMate {
         
         private Gtk.MenuBar menuBar;
         
-        private Gtk.Notebook notebook;
-        
         private Gtk.ScrolledWindow GtkScrolledWindow;
         
         private Gtk.TextView textView;
@@ -101,13 +99,6 @@ namespace TuxMate {
             w3.Expand = false;
             w3.Fill = false;
             // Container child vbox.Gtk.Box+BoxChild
-            this.notebook = new Gtk.Notebook();
-            this.notebook.CanFocus = true;
-            this.notebook.Name = "notebook";
-            this.notebook.CurrentPage = 0;
-            this.notebook.ShowBorder = false;
-            this.notebook.ShowTabs = false;
-            // Container child notebook.Gtk.Notebook+NotebookChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
@@ -115,27 +106,30 @@ namespace TuxMate {
             this.textView = new Gtk.TextView();
             this.textView.CanFocus = true;
             this.textView.Name = "textView";
+            this.textView.LeftMargin = 2;
             this.GtkScrolledWindow.Add(this.textView);
-            this.notebook.Add(this.GtkScrolledWindow);
-            this.vbox.Add(this.notebook);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox[this.notebook]));
-            w6.Position = 1;
+            this.vbox.Add(this.GtkScrolledWindow);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox[this.GtkScrolledWindow]));
+            w5.Position = 1;
             // Container child vbox.Gtk.Box+BoxChild
             this.statusbar = new Gtk.Statusbar();
             this.statusbar.Name = "statusbar";
             this.statusbar.Spacing = 6;
             this.vbox.Add(this.statusbar);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox[this.statusbar]));
-            w7.Position = 2;
-            w7.Expand = false;
-            w7.Fill = false;
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox[this.statusbar]));
+            w6.Position = 2;
+            w6.Expand = false;
+            w6.Fill = false;
             this.Add(this.vbox);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
             this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
+            this.NewAction.Activated += new System.EventHandler(this.OnNewActionActivated);
             this.OpenAction.Activated += new System.EventHandler(this.OnOpenActionActivated);
+            this.SaveAction.Activated += new System.EventHandler(this.OnSaveActionActivated);
+            this.SaveAsAction.Activated += new System.EventHandler(this.OnSaveAsActionActivated);
             this.QuitAction.Activated += new System.EventHandler(this.OnQuitActionActivated);
             this.PreferencesAction.Activated += new System.EventHandler(this.OnPreferencesActionActivated);
         }

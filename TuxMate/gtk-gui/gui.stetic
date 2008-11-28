@@ -26,6 +26,7 @@
         <property name="Label" translatable="yes">_New</property>
         <property name="ShortLabel" translatable="yes">_New</property>
         <property name="StockId">gtk-new</property>
+        <signal name="Activated" handler="OnNewActionActivated" />
       </action>
       <action id="OpenAction">
         <property name="Type">Action</property>
@@ -39,6 +40,7 @@
         <property name="Label" translatable="yes">_Save</property>
         <property name="ShortLabel" translatable="yes">_Save</property>
         <property name="StockId">gtk-save</property>
+        <signal name="Activated" handler="OnSaveActionActivated" />
       </action>
       <action id="SaveAsAction">
         <property name="Type">Action</property>
@@ -46,6 +48,7 @@
         <property name="Label" translatable="yes">Save _As...</property>
         <property name="ShortLabel" translatable="yes">Save _As...</property>
         <property name="StockId">gtk-save-as</property>
+        <signal name="Activated" handler="OnSaveAsActionActivated" />
       </action>
       <action id="CloseAction">
         <property name="Type">Action</property>
@@ -105,24 +108,16 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Notebook" id="notebook">
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
             <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="CurrentPage">0</property>
-            <property name="ShowBorder">False</property>
-            <property name="ShowTabs">False</property>
+            <property name="ShadowType">In</property>
             <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+              <widget class="Gtk.TextView" id="textView">
                 <property name="MemberName" />
-                <property name="ShadowType">In</property>
-                <child>
-                  <widget class="Gtk.TextView" id="textView">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                    <property name="Text" translatable="yes" />
-                  </widget>
-                </child>
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Text" translatable="yes" />
+                <property name="LeftMargin">2</property>
               </widget>
             </child>
           </widget>
