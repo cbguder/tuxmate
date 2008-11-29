@@ -10,6 +10,7 @@ namespace TuxMate
 	public partial class MainWindow: Gtk.Window
 	{
 		string filename;
+		string originalBuffer;
 
 		protected string Filename
 		{
@@ -17,7 +18,7 @@ namespace TuxMate
 			set { filename = value; SetTitle(filename); }
 		}
 
-		public MainWindow() : base(Gtk.WindowType.Toplevel)
+		public MainWindow(): base(Gtk.WindowType.Toplevel)
 		{
 			Build();
 			textView.ModifyFont(Pango.FontDescription.FromString("monospace 10"));
@@ -35,15 +36,15 @@ namespace TuxMate
 		protected void NewFile()
 		{
 			Filename = null;
-			textView.Buffer.Text = "";
+			textView.Buffer.Text = originalBuffer = "";
 		}
 
 		protected void OpenFile()
 		{
-			Gtk.FileChooserDialog fc = new Gtk.FileChooserDialog("Open File", this,
-			                                                     FileChooserAction.Open,
-			                                                     "Cancel", ResponseType.Cancel,
-			                                                     "Open", ResponseType.Accept);
+			FileChooserDialog fc = new FileChooserDialog("Open File", this,
+			                                             FileChooserAction.Open,
+			                                             "Cancel", ResponseType.Cancel,
+			                                             "Open", ResponseType.Accept);
 
 			if(fc.Run() == (int)ResponseType.Accept)
 				LoadFile(fc.Filename);
@@ -57,10 +58,12 @@ namespace TuxMate
 			try {
 				System.IO.FileStream fs = new FileStream(path, FileMode.Open);
 				StreamReader sr = new StreamReader(fs);
-				textView.Buffer.Text = sr.ReadToEnd();
+				originalBuffer = sr.ReadToEnd();
 				sr.Close();
 				fs.Close();
+
 				Filename = path;
+				textView.Buffer.Text = originalBuffer;
 			} catch (Exception e) {
 				MessageDialog md = new MessageDialog(this,
 				                                     DialogFlags.DestroyWithParent,
@@ -72,15 +75,15 @@ namespace TuxMate
 			}
 		}
 
-		protected void SaveFile()
+		protected bool SaveFile()
 		{
 			if(Filename == null)
-				SaveAsFile();
+				return SaveAsFile();
 			else
-				SaveFile(Filename);
+				return SaveFile(Filename);
 		}
 
-		protected void SaveFile(string path)
+		protected bool SaveFile(string path)
 		{
 			try {
 				System.IO.FileStream fs = new FileStream(path, FileMode.Create);
@@ -91,6 +94,7 @@ namespace TuxMate
 				sw.Close();
 				fs.Close();
 				Filename = path;
+				originalBuffer = textView.Buffer.Text;
 			} catch (Exception e) {
 				MessageDialog md = new MessageDialog(this,
 				                                     DialogFlags.DestroyWithParent,
@@ -99,26 +103,79 @@ namespace TuxMate
 				                                     e.Message);
 				md.Run();
 				md.Destroy();
+
+				return false;
 			}
+
+			return true;
 		}
 
-		protected void SaveAsFile()
+		protected bool SaveAsFile()
 		{
-			Gtk.FileChooserDialog fc = new Gtk.FileChooserDialog("Save As...", this,
-			                                                     FileChooserAction.Save,
-			                                                     "Cancel", ResponseType.Cancel,
-			                                                     "Save", ResponseType.Accept);
+			bool result = false;
+			FileChooserDialog fc = new FileChooserDialog("Save As...", this,
+			                                             FileChooserAction.Save,
+			                                             "Cancel", ResponseType.Cancel,
+			                                             "Save", ResponseType.Accept);
 
 			if(fc.Run() == (int)ResponseType.Accept)
-				SaveFile(fc.Filename);
+				result = SaveFile(fc.Filename);
 
 			fc.Destroy();
+			return result;
+		}
+
+		protected bool ShouldQuit()
+		{
+			bool shouldQuit = true;
+
+			if(originalBuffer != textView.Buffer.Text) {
+				shouldQuit = false;
+
+				MessageDialog md = new MessageDialog(this, DialogFlags.Modal,
+				                                     MessageType.Warning,
+				                                     ButtonsType.None,
+				                                     "<span weight=\"bold\" size=\"larger\">Save changes to document before closing?</span>");
+				md.SecondaryText = "Your changes will be lost if you don't save them.";
+
+				Button closeButton  = new Button("Close without saving");
+				Button cancelButton = new Button(Stock.Cancel);
+				Button saveButton;
+				if(Filename == null)
+					saveButton = new Button(Stock.SaveAs);
+				else
+					saveButton = new Button(Stock.Save);
+				saveButton.CanDefault = true;
+
+				md.AddActionWidget(closeButton,  ResponseType.Reject);
+				md.AddActionWidget(cancelButton, ResponseType.Cancel);
+				md.AddActionWidget(saveButton, ResponseType.Accept);
+
+				md.DefaultResponse = ResponseType.Accept;
+				md.ShowAll();
+				int result = md.Run();
+				switch(result) {
+				case (int)ResponseType.Reject:
+					shouldQuit = true;
+					break;
+				case (int)ResponseType.Accept:
+					shouldQuit = SaveFile();
+					break;
+				}
+
+				if(!shouldQuit)
+					md.Destroy();
+			}
+
+			return shouldQuit;
 		}
 
 		protected void OnDeleteEvent(object sender, DeleteEventArgs a)
 		{
-			Application.Quit();
-			a.RetVal = true;
+			if(ShouldQuit())
+				Application.Quit();
+			else
+				a.RetVal = true;
 		}
 
 		protected virtual void OnNewActionActivated(object sender, System.EventArgs e)
@@ -143,7 +200,8 @@ namespace TuxMate
 
 		protected virtual void OnQuitActionActivated(object sender, System.EventArgs e)
 		{
-			Application.Quit();
+			if(ShouldQuit())
+				Application.Quit();
 		}
 
 		protected virtual void OnPreferencesActionActivated(object sender, System.EventArgs e)
