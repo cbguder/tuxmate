@@ -70,6 +70,18 @@
         <property name="StockId">gtk-preferences</property>
         <signal name="Activated" handler="OnPreferencesActionActivated" />
       </action>
+      <action id="HelpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="AboutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">_About</property>
+        <property name="ShortLabel" translatable="yes">_About</property>
+        <property name="StockId">gtk-about</property>
+        <signal name="Activated" handler="OnAboutActionActivated" />
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">TuxMate</property>
@@ -98,6 +110,9 @@
                 <node type="Menuitem" action="PreferencesAction" />
               </node>
               <node type="Menu" action="ViewAction" />
+              <node type="Menu" action="HelpAction">
+                <node type="Menuitem" action="AboutAction" />
+              </node>
             </node>
           </widget>
           <packing>

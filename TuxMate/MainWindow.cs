@@ -147,28 +147,10 @@ namespace TuxMate
 			if(originalBuffer != textView.Buffer.Text) {
 				shouldQuit = false;
 
-				MessageDialog md = new MessageDialog(this, DialogFlags.Modal,
-				                                     MessageType.Warning,
-				                                     ButtonsType.None,
-				                                     "<span weight=\"bold\" size=\"larger\">Save changes to document before closing?</span>");
-				md.SecondaryText = "Your changes will be lost if you don't save them.";
+				CloseConfirmationDialog closeConfirmationDialog = new CloseConfirmationDialog(Filename);
+				int result = closeConfirmationDialog.Run();
+				closeConfirmationDialog.Destroy();
 
-				Button closeButton  = new Button("Close without saving");
-				Button cancelButton = new Button(Stock.Cancel);
-				Button saveButton;
-				if(Filename == null)
-					saveButton = new Button(Stock.SaveAs);
-				else
-					saveButton = new Button(Stock.Save);
-				saveButton.CanDefault = true;
-
-				md.AddActionWidget(closeButton,  ResponseType.Reject);
-				md.AddActionWidget(cancelButton, ResponseType.Cancel);
-				md.AddActionWidget(saveButton, ResponseType.Accept);
-
-				md.DefaultResponse = ResponseType.Accept;
-				md.ShowAll();
-				int result = md.Run();
 				switch(result) {
 				case (int)ResponseType.Reject:
 					shouldQuit = true;
@@ -177,9 +159,6 @@ namespace TuxMate
 					shouldQuit = SaveFile();
 					break;
 				}
-
-				if(!shouldQuit)
-					md.Destroy();
 			}
 
 			return shouldQuit;
@@ -224,6 +203,13 @@ namespace TuxMate
 			PreferencesDialog preferencesDialog = new PreferencesDialog();
 			preferencesDialog.Run();
 			preferencesDialog.Destroy();
+		}
+
+		protected virtual void OnAboutActionActivated (object sender, System.EventArgs e)
+		{
+			AboutDialog aboutDialog = new AboutDialog();
+			aboutDialog.Run();
+			aboutDialog.Destroy();
 		}
 	}
 }

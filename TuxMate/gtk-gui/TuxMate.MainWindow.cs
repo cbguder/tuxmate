@@ -33,6 +33,10 @@ namespace TuxMate {
         
         private Gtk.Action PreferencesAction;
         
+        private Gtk.Action HelpAction;
+        
+        private Gtk.Action AboutAction;
+        
         private Gtk.VBox vbox;
         
         private Gtk.MenuBar menuBar;
@@ -78,6 +82,12 @@ namespace TuxMate {
             this.PreferencesAction = new Gtk.Action("PreferencesAction", Mono.Unix.Catalog.GetString("_Preferences"), null, "gtk-preferences");
             this.PreferencesAction.ShortLabel = Mono.Unix.Catalog.GetString("_Preferences");
             w2.Add(this.PreferencesAction, null);
+            this.HelpAction = new Gtk.Action("HelpAction", Mono.Unix.Catalog.GetString("Help"), null, null);
+            this.HelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
+            w2.Add(this.HelpAction, null);
+            this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("_About"), null, "gtk-about");
+            this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("_About");
+            w2.Add(this.AboutAction, null);
             w1.InsertActionGroup(w2, 0);
             this.AddAccelGroup(w1.AccelGroup);
             this.Name = "TuxMate.MainWindow";
@@ -90,7 +100,7 @@ namespace TuxMate {
             this.vbox.Name = "vbox";
             this.vbox.Spacing = 2;
             // Container child vbox.Gtk.Box+BoxChild
-            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='PreferencesAction'/></menu><menu action='ViewAction'/></menubar></ui>");
+            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='PreferencesAction'/></menu><menu action='ViewAction'/><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
             this.menuBar = ((Gtk.MenuBar)(w1.GetWidget("/menuBar")));
             this.menuBar.Name = "menuBar";
             this.vbox.Add(this.menuBar);
@@ -132,6 +142,7 @@ namespace TuxMate {
             this.SaveAsAction.Activated += new System.EventHandler(this.OnSaveAsActionActivated);
             this.QuitAction.Activated += new System.EventHandler(this.OnQuitActionActivated);
             this.PreferencesAction.Activated += new System.EventHandler(this.OnPreferencesActionActivated);
+            this.AboutAction.Activated += new System.EventHandler(this.OnAboutActionActivated);
         }
     }
 }
