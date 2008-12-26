@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using Gtk;
+using GtkSourceView;
 
 namespace TuxMate
 {
@@ -26,6 +27,11 @@ namespace TuxMate
 	{
 		string filename;
 		string originalBuffer;
+
+		SourceLanguagesManager manager;
+		SourceLanguage language;
+		SourceBuffer buffer;
+		SourceView textView;
 
 		protected string Filename
 		{
@@ -36,7 +42,23 @@ namespace TuxMate
 		public MainWindow(): base(Gtk.WindowType.Toplevel)
 		{
 			Build();
+
+			manager = new SourceLanguagesManager();
+			language = manager.GetLanguageFromMimeType("text/x-csharp");
+
+			buffer = new SourceBuffer(language);
+			buffer.Highlight = true;
+
+			textView = new SourceView(buffer);
+			textView.ShowLineNumbers = true;
+			textView.TabsWidth = 4;
 			textView.ModifyFont(Pango.FontDescription.FromString("monospace 10"));
+
+			scrolledwindow.Add(textView);
+			scrolledwindow.ShowAll();
+
+			this.Focus = textView;
+			originalBuffer = "";
 			NewFile();
 		}
 
@@ -50,8 +72,11 @@ namespace TuxMate
 
 		protected void NewFile()
 		{
-			Filename = null;
-			textView.Buffer.Text = originalBuffer = "";
+			if(ShouldQuit())
+			{
+				Filename = null;
+				textView.Buffer.Text = originalBuffer = "";
+			}
 		}
 
 		protected void OpenFile()

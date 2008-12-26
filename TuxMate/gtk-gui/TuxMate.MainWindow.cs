@@ -41,9 +41,7 @@ namespace TuxMate {
         
         private Gtk.MenuBar menuBar;
         
-        private Gtk.ScrolledWindow GtkScrolledWindow;
-        
-        private Gtk.TextView textView;
+        private Gtk.ScrolledWindow scrolledwindow;
         
         private Gtk.Statusbar statusbar;
         
@@ -109,27 +107,22 @@ namespace TuxMate {
             w3.Expand = false;
             w3.Fill = false;
             // Container child vbox.Gtk.Box+BoxChild
-            this.GtkScrolledWindow = new Gtk.ScrolledWindow();
-            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-            this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
-            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-            this.textView = new Gtk.TextView();
-            this.textView.CanFocus = true;
-            this.textView.Name = "textView";
-            this.textView.LeftMargin = 2;
-            this.GtkScrolledWindow.Add(this.textView);
-            this.vbox.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox[this.GtkScrolledWindow]));
-            w5.Position = 1;
+            this.scrolledwindow = new Gtk.ScrolledWindow();
+            this.scrolledwindow.CanFocus = true;
+            this.scrolledwindow.Name = "scrolledwindow";
+            this.scrolledwindow.ShadowType = ((Gtk.ShadowType)(1));
+            this.vbox.Add(this.scrolledwindow);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox[this.scrolledwindow]));
+            w4.Position = 1;
             // Container child vbox.Gtk.Box+BoxChild
             this.statusbar = new Gtk.Statusbar();
             this.statusbar.Name = "statusbar";
             this.statusbar.Spacing = 6;
             this.vbox.Add(this.statusbar);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox[this.statusbar]));
-            w6.Position = 2;
-            w6.Expand = false;
-            w6.Fill = false;
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox[this.statusbar]));
+            w5.Position = 2;
+            w5.Expand = false;
+            w5.Fill = false;
             this.Add(this.vbox);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
