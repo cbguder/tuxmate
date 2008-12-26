@@ -28,7 +28,7 @@ namespace TuxMate
 		string filename;
 		string originalBuffer;
 
-		SourceLanguagesManager manager;
+		SourceLanguageManager manager;
 		SourceLanguage language;
 		SourceBuffer buffer;
 		SourceView textView;
@@ -43,15 +43,13 @@ namespace TuxMate
 		{
 			Build();
 
-			manager = new SourceLanguagesManager();
-			language = manager.GetLanguageFromMimeType("text/x-csharp");
-
-			buffer = new SourceBuffer(language);
-			buffer.Highlight = true;
+			manager  = new SourceLanguageManager();
+			language = manager.GetLanguage("c-sharp");
+			buffer   = new SourceBuffer(language);
 
 			textView = new SourceView(buffer);
 			textView.ShowLineNumbers = true;
-			textView.TabsWidth = 4;
+			textView.TabWidth = 4;
 			textView.ModifyFont(Pango.FontDescription.FromString("monospace 10"));
 
 			scrolledwindow.Add(textView);
