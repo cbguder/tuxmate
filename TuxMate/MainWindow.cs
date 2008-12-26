@@ -65,7 +65,6 @@ namespace TuxMate
 				LoadFile(fc.Filename);
 
 			fc.Destroy();
-
 		}
 
 		protected void LoadFile(string path)

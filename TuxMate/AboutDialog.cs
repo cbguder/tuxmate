@@ -26,7 +26,7 @@ namespace TuxMate
 		public AboutDialog()
 		{
 			Assembly asm = Assembly.GetExecutingAssembly();
-		
+
 			ProgramName = (asm.GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0] as AssemblyTitleAttribute).Title;
 			Version = asm.GetName().Version.ToString();
 			Copyright = (asm.GetCustomAttributes(typeof (AssemblyCopyrightAttribute), false)[0] as AssemblyCopyrightAttribute).Copyright;

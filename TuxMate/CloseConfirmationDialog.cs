@@ -26,7 +26,7 @@ namespace TuxMate
 		Button closeButton;
 		Button cancelButton;
 		Button saveButton;
-		
+
 		public CloseConfirmationDialog(string filename)
 		{
 			Modal = true;
