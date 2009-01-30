@@ -82,6 +82,47 @@
         <property name="StockId">gtk-about</property>
         <signal name="Activated" handler="OnAboutActionActivated" />
       </action>
+      <action id="UndoAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;z</property>
+        <property name="Label" translatable="yes">_Undo</property>
+        <property name="Sensitive">False</property>
+        <property name="ShortLabel" translatable="yes">_Undo</property>
+        <property name="StockId">gtk-undo</property>
+        <signal name="Activated" handler="OnUndoActionActivated" />
+      </action>
+      <action id="RedoAction">
+        <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Control&gt;&lt;Shift&gt;z</property>
+        <property name="Label" translatable="yes">_Redo</property>
+        <property name="Sensitive">False</property>
+        <property name="ShortLabel" translatable="yes">_Redo</property>
+        <property name="StockId">gtk-redo</property>
+        <signal name="Activated" handler="OnRedoActionActivated" />
+      </action>
+      <action id="CutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Cu_t</property>
+        <property name="ShortLabel" translatable="yes">Cu_t</property>
+        <property name="StockId">gtk-cut</property>
+      </action>
+      <action id="CopyAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">_Copy</property>
+        <property name="ShortLabel" translatable="yes">_Copy</property>
+        <property name="StockId">gtk-copy</property>
+      </action>
+      <action id="PasteAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">_Paste</property>
+        <property name="ShortLabel" translatable="yes">_Paste</property>
+        <property name="StockId">gtk-paste</property>
+      </action>
+      <action id="undoAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-undo</property>
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">TuxMate</property>
@@ -107,7 +148,15 @@
                 <node type="Menuitem" action="QuitAction" />
               </node>
               <node type="Menu" action="EditAction">
+                <node type="Menuitem" action="UndoAction" />
+                <node type="Menuitem" action="RedoAction" />
+                <node type="Separator" />
+                <node type="Menuitem" action="CutAction" />
+                <node type="Menuitem" action="CopyAction" />
+                <node type="Menuitem" action="PasteAction" />
+                <node type="Separator" />
                 <node type="Menuitem" action="PreferencesAction" />
+                <node type="Menuitem" />
               </node>
               <node type="Menu" action="ViewAction" />
               <node type="Menu" action="HelpAction">
@@ -233,6 +282,7 @@
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnHighlightRightMarginClicked" />
                   </widget>
                   <packing>
                     <property name="X">40</property>
@@ -247,6 +297,7 @@
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnHighlightCurrentLineClicked" />
                   </widget>
                   <packing>
                     <property name="X">25</property>
@@ -261,6 +312,7 @@
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnDisplayGroupsAndFoldersInBoldClicked" />
                   </widget>
                   <packing>
                     <property name="X">25</property>
@@ -291,6 +343,7 @@
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnReindentPastedTextClicked" />
                   </widget>
                   <packing>
                     <property name="X">10</property>
@@ -306,6 +359,7 @@
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnAutopairCharactersClicked" />
                   </widget>
                   <packing>
                     <property name="X">10</property>
@@ -365,6 +419,7 @@
                     <property name="FontName">monospace 10</property>
                     <property name="UseFont">True</property>
                     <property name="UseSize">True</property>
+                    <signal name="FontSet" handler="OnFontButtonFontSet" />
                   </widget>
                   <packing>
                     <property name="X">67</property>
@@ -411,15 +466,16 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.ComboBox" id="combobox1">
+                  <widget class="Gtk.ComboBox" id="fileEncoding">
                     <property name="MemberName" />
                     <property name="IsTextCombo">True</property>
                     <property name="Items" translatable="yes">ISO-8859-1 (Latin 1)
 ISO-8859-1 (Windows)
-UTF8 (recommended)
-UTF16 (Big Endian)
-UTF16 (Little Endian)</property>
+UTF-8 (recommended)
+UTF-16
+UTF-32</property>
                     <property name="Active">2</property>
+                    <signal name="Changed" handler="OnFileEncodingChanged" />
                   </widget>
                   <packing>
                     <property name="X">105</property>
@@ -437,13 +493,14 @@ UTF16 (Little Endian)</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.ComboBox" id="combobox2">
+                  <widget class="Gtk.ComboBox" id="lineEndings">
                     <property name="MemberName" />
                     <property name="IsTextCombo">True</property>
                     <property name="Items" translatable="yes">LF (recommended)
 CR (Mac OS Classic)
 CRLF (Windows)</property>
                     <property name="Active">0</property>
+                    <signal name="Changed" handler="OnLineEndingsChanged" />
                   </widget>
                   <packing>
                     <property name="X">105</property>

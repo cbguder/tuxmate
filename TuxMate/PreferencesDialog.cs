@@ -22,20 +22,83 @@ namespace TuxMate
 {
 	public partial class PreferencesDialog : Gtk.Dialog
 	{
+		static string[] encodings = { "iso-8859-1", "windows-1252", "utf-8", "utf-16", "utf-32" };
+		static string[] endings   = { "<LF>", "<CR>", "<CR><LF>" };
+
 		public PreferencesDialog()
 		{
 			this.Build();
+			Preferences.AddNotify(new GConf.NotifyEventHandler(OnGConfChanged));
+			this.OnGConfChanged(null, null);
 		}
 
-		protected virtual void OnShowRightMarginIndicatorClicked (object sender, System.EventArgs e)
+		protected virtual void OnGConfChanged(object sender, System.EventArgs e)
 		{
-			highlightRightMargin.Sensitive = ((Gtk.CheckButton)sender).Active;
+			highlightCurrentLine.Active          = Preferences.HighlightCurrentLine;
+			showRightMarginIndicator.Active      = Preferences.ShowRightMarginIndicator;
+			highlightRightMargin.Active          = Preferences.HighlightRightMargin;
+			displayGroupsAndFoldersInBold.Active = Preferences.DisplayGroupsAndFoldersInBold;
+
+			reindentPastedText.Active            = Preferences.ReindentPastedText;
+			autopairCharacters.Active            = Preferences.AutoPairCharacters;
+
+			useSystemFont.Active                 = Preferences.UseSystemFont;
+			fontButton.FontName                  = Preferences.Font;
+
+			fileEncoding.Active                  = Array.BinarySearch(encodings, Preferences.FileEncoding);
+			lineEndings.Active                   = Array.BinarySearch(endings,   Preferences.LineEndings);
 		}
 
-		protected virtual void OnUseSystemFontClicked (object sender, System.EventArgs e)
+		protected virtual void OnHighlightCurrentLineClicked(object sender, System.EventArgs e)
 		{
-			bool newStatus = !((Gtk.CheckButton)sender).Active;
-			fontLabel.Sensitive = fontButton.Sensitive = newStatus;
+			Preferences.HighlightCurrentLine = highlightCurrentLine.Active;
+		}
+
+		protected virtual void OnShowRightMarginIndicatorClicked(object sender, System.EventArgs e)
+		{
+			Preferences.ShowRightMarginIndicator = showRightMarginIndicator.Active;
+			highlightRightMargin.Sensitive = showRightMarginIndicator.Active;
+		}
+
+		protected virtual void OnHighlightRightMarginClicked(object sender, System.EventArgs e)
+		{
+			Preferences.HighlightRightMargin = highlightRightMargin.Active;
+		}
+
+		protected virtual void OnDisplayGroupsAndFoldersInBoldClicked(object sender, System.EventArgs e)
+		{
+			Preferences.DisplayGroupsAndFoldersInBold = displayGroupsAndFoldersInBold.Active;
+		}
+
+		protected virtual void OnReindentPastedTextClicked(object sender, System.EventArgs e)
+		{
+			Preferences.ReindentPastedText = reindentPastedText.Active;
+		}
+
+		protected virtual void OnAutopairCharactersClicked(object sender, System.EventArgs e)
+		{
+			Preferences.AutoPairCharacters = autopairCharacters.Active;
+		}
+
+		protected virtual void OnUseSystemFontClicked(object sender, System.EventArgs e)
+		{
+			Preferences.UseSystemFont = useSystemFont.Active;
+			fontLabel.Sensitive = fontButton.Sensitive = !useSystemFont.Active;
+		}
+
+		protected virtual void OnFontButtonFontSet(object sender, System.EventArgs e)
+		{
+			Preferences.Font = fontButton.FontName;
+		}
+
+		protected virtual void OnFileEncodingChanged(object sender, System.EventArgs e)
+		{
+			Preferences.FileEncoding = encodings[fileEncoding.Active];
+		}
+
+		protected virtual void OnLineEndingsChanged(object sender, System.EventArgs e)
+		{
+			Preferences.LineEndings = endings[lineEndings.Active];
 		}
 	}
 }

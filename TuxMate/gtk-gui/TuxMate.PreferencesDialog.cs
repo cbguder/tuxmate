@@ -55,11 +55,11 @@ namespace TuxMate {
         
         private Gtk.Label label1;
         
-        private Gtk.ComboBox combobox1;
+        private Gtk.ComboBox fileEncoding;
         
         private Gtk.Label label2;
         
-        private Gtk.ComboBox combobox2;
+        private Gtk.ComboBox lineEndings;
         
         private Gtk.Label label6;
         
@@ -264,16 +264,16 @@ namespace TuxMate {
             w17.X = 10;
             w17.Y = 17;
             // Container child fixed4.Gtk.Fixed+FixedChild
-            this.combobox1 = Gtk.ComboBox.NewText();
-            this.combobox1.AppendText(Mono.Unix.Catalog.GetString("ISO-8859-1 (Latin 1)"));
-            this.combobox1.AppendText(Mono.Unix.Catalog.GetString("ISO-8859-1 (Windows)"));
-            this.combobox1.AppendText(Mono.Unix.Catalog.GetString("UTF8 (recommended)"));
-            this.combobox1.AppendText(Mono.Unix.Catalog.GetString("UTF16 (Big Endian)"));
-            this.combobox1.AppendText(Mono.Unix.Catalog.GetString("UTF16 (Little Endian)"));
-            this.combobox1.Name = "combobox1";
-            this.combobox1.Active = 2;
-            this.fixed4.Add(this.combobox1);
-            Gtk.Fixed.FixedChild w18 = ((Gtk.Fixed.FixedChild)(this.fixed4[this.combobox1]));
+            this.fileEncoding = Gtk.ComboBox.NewText();
+            this.fileEncoding.AppendText(Mono.Unix.Catalog.GetString("ISO-8859-1 (Latin 1)"));
+            this.fileEncoding.AppendText(Mono.Unix.Catalog.GetString("ISO-8859-1 (Windows)"));
+            this.fileEncoding.AppendText(Mono.Unix.Catalog.GetString("UTF-8 (recommended)"));
+            this.fileEncoding.AppendText(Mono.Unix.Catalog.GetString("UTF-16"));
+            this.fileEncoding.AppendText(Mono.Unix.Catalog.GetString("UTF-32"));
+            this.fileEncoding.Name = "fileEncoding";
+            this.fileEncoding.Active = 2;
+            this.fixed4.Add(this.fileEncoding);
+            Gtk.Fixed.FixedChild w18 = ((Gtk.Fixed.FixedChild)(this.fixed4[this.fileEncoding]));
             w18.X = 105;
             w18.Y = 10;
             // Container child fixed4.Gtk.Fixed+FixedChild
@@ -285,14 +285,14 @@ namespace TuxMate {
             w19.X = 14;
             w19.Y = 57;
             // Container child fixed4.Gtk.Fixed+FixedChild
-            this.combobox2 = Gtk.ComboBox.NewText();
-            this.combobox2.AppendText(Mono.Unix.Catalog.GetString("LF (recommended)"));
-            this.combobox2.AppendText(Mono.Unix.Catalog.GetString("CR (Mac OS Classic)"));
-            this.combobox2.AppendText(Mono.Unix.Catalog.GetString("CRLF (Windows)"));
-            this.combobox2.Name = "combobox2";
-            this.combobox2.Active = 0;
-            this.fixed4.Add(this.combobox2);
-            Gtk.Fixed.FixedChild w20 = ((Gtk.Fixed.FixedChild)(this.fixed4[this.combobox2]));
+            this.lineEndings = Gtk.ComboBox.NewText();
+            this.lineEndings.AppendText(Mono.Unix.Catalog.GetString("LF (recommended)"));
+            this.lineEndings.AppendText(Mono.Unix.Catalog.GetString("CR (Mac OS Classic)"));
+            this.lineEndings.AppendText(Mono.Unix.Catalog.GetString("CRLF (Windows)"));
+            this.lineEndings.Name = "lineEndings";
+            this.lineEndings.Active = 0;
+            this.fixed4.Add(this.lineEndings);
+            Gtk.Fixed.FixedChild w20 = ((Gtk.Fixed.FixedChild)(this.fixed4[this.lineEndings]));
             w20.X = 105;
             w20.Y = 50;
             this.notebook3.Add(this.fixed4);
@@ -334,7 +334,15 @@ namespace TuxMate {
             this.DefaultHeight = 483;
             this.Show();
             this.showRightMarginIndicator.Clicked += new System.EventHandler(this.OnShowRightMarginIndicatorClicked);
+            this.highlightRightMargin.Clicked += new System.EventHandler(this.OnHighlightRightMarginClicked);
+            this.highlightCurrentLine.Clicked += new System.EventHandler(this.OnHighlightCurrentLineClicked);
+            this.displayGroupsAndFoldersInBold.Clicked += new System.EventHandler(this.OnDisplayGroupsAndFoldersInBoldClicked);
+            this.reindentPastedText.Clicked += new System.EventHandler(this.OnReindentPastedTextClicked);
+            this.autopairCharacters.Clicked += new System.EventHandler(this.OnAutopairCharactersClicked);
             this.useSystemFont.Clicked += new System.EventHandler(this.OnUseSystemFontClicked);
+            this.fontButton.FontSet += new System.EventHandler(this.OnFontButtonFontSet);
+            this.fileEncoding.Changed += new System.EventHandler(this.OnFileEncodingChanged);
+            this.lineEndings.Changed += new System.EventHandler(this.OnLineEndingsChanged);
         }
     }
 }

@@ -37,6 +37,18 @@ namespace TuxMate {
         
         private Gtk.Action AboutAction;
         
+        private Gtk.Action UndoAction;
+        
+        private Gtk.Action RedoAction;
+        
+        private Gtk.Action CutAction;
+        
+        private Gtk.Action CopyAction;
+        
+        private Gtk.Action PasteAction;
+        
+        private Gtk.Action undoAction;
+        
         private Gtk.VBox vbox;
         
         private Gtk.MenuBar menuBar;
@@ -86,6 +98,25 @@ namespace TuxMate {
             this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("_About"), null, "gtk-about");
             this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("_About");
             w2.Add(this.AboutAction, null);
+            this.UndoAction = new Gtk.Action("UndoAction", Mono.Unix.Catalog.GetString("_Undo"), null, "gtk-undo");
+            this.UndoAction.Sensitive = false;
+            this.UndoAction.ShortLabel = Mono.Unix.Catalog.GetString("_Undo");
+            w2.Add(this.UndoAction, "<Control>z");
+            this.RedoAction = new Gtk.Action("RedoAction", Mono.Unix.Catalog.GetString("_Redo"), null, "gtk-redo");
+            this.RedoAction.Sensitive = false;
+            this.RedoAction.ShortLabel = Mono.Unix.Catalog.GetString("_Redo");
+            w2.Add(this.RedoAction, "<Control><Shift>z");
+            this.CutAction = new Gtk.Action("CutAction", Mono.Unix.Catalog.GetString("Cu_t"), null, "gtk-cut");
+            this.CutAction.ShortLabel = Mono.Unix.Catalog.GetString("Cu_t");
+            w2.Add(this.CutAction, null);
+            this.CopyAction = new Gtk.Action("CopyAction", Mono.Unix.Catalog.GetString("_Copy"), null, "gtk-copy");
+            this.CopyAction.ShortLabel = Mono.Unix.Catalog.GetString("_Copy");
+            w2.Add(this.CopyAction, null);
+            this.PasteAction = new Gtk.Action("PasteAction", Mono.Unix.Catalog.GetString("_Paste"), null, "gtk-paste");
+            this.PasteAction.ShortLabel = Mono.Unix.Catalog.GetString("_Paste");
+            w2.Add(this.PasteAction, null);
+            this.undoAction = new Gtk.Action("undoAction", null, null, "gtk-undo");
+            w2.Add(this.undoAction, null);
             w1.InsertActionGroup(w2, 0);
             this.AddAccelGroup(w1.AccelGroup);
             this.Name = "TuxMate.MainWindow";
@@ -98,7 +129,7 @@ namespace TuxMate {
             this.vbox.Name = "vbox";
             this.vbox.Spacing = 2;
             // Container child vbox.Gtk.Box+BoxChild
-            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='PreferencesAction'/></menu><menu action='ViewAction'/><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
+            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='UndoAction'/><menuitem action='RedoAction'/><separator/><menuitem action='CutAction'/><menuitem action='CopyAction'/><menuitem action='PasteAction'/><separator/><menuitem action='PreferencesAction'/><menuitem/></menu><menu action='ViewAction'/><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
             this.menuBar = ((Gtk.MenuBar)(w1.GetWidget("/menuBar")));
             this.menuBar.Name = "menuBar";
             this.vbox.Add(this.menuBar);
@@ -136,6 +167,8 @@ namespace TuxMate {
             this.QuitAction.Activated += new System.EventHandler(this.OnQuitActionActivated);
             this.PreferencesAction.Activated += new System.EventHandler(this.OnPreferencesActionActivated);
             this.AboutAction.Activated += new System.EventHandler(this.OnAboutActionActivated);
+            this.UndoAction.Activated += new System.EventHandler(this.OnUndoActionActivated);
+            this.RedoAction.Activated += new System.EventHandler(this.OnRedoActionActivated);
         }
     }
 }

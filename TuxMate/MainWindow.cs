@@ -52,6 +52,8 @@ namespace TuxMate
 			textView.TabWidth = 4;
 			textView.ModifyFont(Pango.FontDescription.FromString("monospace 10"));
 
+			buffer.Changed += new System.EventHandler(this.OnBufferChanged);
+
 			scrolledwindow.Add(textView);
 			scrolledwindow.ShowAll();
 
@@ -227,11 +229,29 @@ namespace TuxMate
 			preferencesDialog.Destroy();
 		}
 
-		protected virtual void OnAboutActionActivated (object sender, System.EventArgs e)
+		protected virtual void OnAboutActionActivated(object sender, System.EventArgs e)
 		{
 			AboutDialog aboutDialog = new AboutDialog();
 			aboutDialog.Run();
 			aboutDialog.Destroy();
+		}
+
+		protected virtual void OnUndoActionActivated(object sender, System.EventArgs e)
+		{
+			if(buffer.CanUndo)
+				buffer.Undo();
+		}
+
+		protected virtual void OnRedoActionActivated(object sender, System.EventArgs e)
+		{
+			if(buffer.CanRedo)
+				buffer.Redo();
+		}
+
+		protected virtual void OnBufferChanged(object sender, System.EventArgs e)
+		{
+			this.UndoAction.Sensitive = buffer.CanUndo;
+			this.RedoAction.Sensitive = buffer.CanRedo;
 		}
 	}
 }
