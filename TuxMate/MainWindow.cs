@@ -43,6 +43,8 @@ namespace TuxMate
 		{
 			Build();
 
+			Preferences.AddNotify(new GConf.NotifyEventHandler(OnGConfChanged));
+
 			manager  = new SourceLanguageManager();
 			language = manager.GetLanguage("c-sharp");
 			buffer   = new SourceBuffer(language);
@@ -50,7 +52,8 @@ namespace TuxMate
 			textView = new SourceView(buffer);
 			textView.ShowLineNumbers = true;
 			textView.TabWidth = 4;
-			textView.ModifyFont(Pango.FontDescription.FromString("monospace 10"));
+
+			this.OnGConfChanged(null, null);
 
 			buffer.Changed += new System.EventHandler(this.OnBufferChanged);
 
@@ -186,6 +189,16 @@ namespace TuxMate
 			}
 
 			return shouldQuit;
+		}
+
+		protected void OnGConfChanged(object sender, System.EventArgs e)
+		{
+			if(Preferences.UseSystemFont)
+				textView.ModifyFont(Pango.FontDescription.FromString("monospace"));
+			else
+				textView.ModifyFont(Pango.FontDescription.FromString(Preferences.Font));
+
+			textView.HighlightCurrentLine = Preferences.HighlightCurrentLine;
 		}
 
 		protected void OnDeleteEvent(object sender, DeleteEventArgs a)

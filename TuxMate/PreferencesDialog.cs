@@ -32,7 +32,7 @@ namespace TuxMate
 			this.OnGConfChanged(null, null);
 		}
 
-		protected virtual void OnGConfChanged(object sender, System.EventArgs e)
+		protected void OnGConfChanged(object sender, System.EventArgs e)
 		{
 			highlightCurrentLine.Active          = Preferences.HighlightCurrentLine;
 			showRightMarginIndicator.Active      = Preferences.ShowRightMarginIndicator;
