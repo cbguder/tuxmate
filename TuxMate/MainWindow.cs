@@ -50,7 +50,6 @@ namespace TuxMate
 			buffer   = new SourceBuffer(language);
 
 			textView = new SourceView(buffer);
-			textView.ShowLineNumbers = true;
 			textView.TabWidth = 4;
 
 			this.OnGConfChanged(null, null);
@@ -199,6 +198,9 @@ namespace TuxMate
 				textView.ModifyFont(Pango.FontDescription.FromString(Preferences.Font));
 
 			textView.HighlightCurrentLine = Preferences.HighlightCurrentLine;
+
+			textView.ShowLineNumbers      = Preferences.ShowLineNumbers;
+			ShowLineNumbersAction.Active  = Preferences.ShowLineNumbers;
 		}
 
 		protected void OnDeleteEvent(object sender, DeleteEventArgs a)
@@ -265,6 +267,11 @@ namespace TuxMate
 		{
 			this.UndoAction.Sensitive = buffer.CanUndo;
 			this.RedoAction.Sensitive = buffer.CanRedo;
+		}
+
+		protected virtual void OnShowLineNumbersActionActivated(object sender, System.EventArgs e)
+		{
+			Preferences.ShowLineNumbers = ShowLineNumbersAction.Active;
 		}
 	}
 }

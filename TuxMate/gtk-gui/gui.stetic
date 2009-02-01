@@ -123,6 +123,14 @@
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-undo</property>
       </action>
+      <action id="ShowLineNumbersAction">
+        <property name="Type">Toggle</property>
+        <property name="Label" translatable="yes">Show Line Numbers</property>
+        <property name="ShortLabel" translatable="yes">Show Line Numbers</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <signal name="Activated" handler="OnShowLineNumbersActionActivated" />
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">TuxMate</property>
@@ -158,7 +166,9 @@
                 <node type="Menuitem" action="PreferencesAction" />
                 <node type="Menuitem" />
               </node>
-              <node type="Menu" action="ViewAction" />
+              <node type="Menu" action="ViewAction">
+                <node type="Menuitem" action="ShowLineNumbersAction" />
+              </node>
               <node type="Menu" action="HelpAction">
                 <node type="Menuitem" action="AboutAction" />
               </node>

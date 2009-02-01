@@ -49,6 +49,8 @@ namespace TuxMate {
         
         private Gtk.Action undoAction;
         
+        private Gtk.ToggleAction ShowLineNumbersAction;
+        
         private Gtk.VBox vbox;
         
         private Gtk.MenuBar menuBar;
@@ -117,6 +119,9 @@ namespace TuxMate {
             w2.Add(this.PasteAction, null);
             this.undoAction = new Gtk.Action("undoAction", null, null, "gtk-undo");
             w2.Add(this.undoAction, null);
+            this.ShowLineNumbersAction = new Gtk.ToggleAction("ShowLineNumbersAction", Mono.Unix.Catalog.GetString("Show Line Numbers"), null, null);
+            this.ShowLineNumbersAction.ShortLabel = Mono.Unix.Catalog.GetString("Show Line Numbers");
+            w2.Add(this.ShowLineNumbersAction, null);
             w1.InsertActionGroup(w2, 0);
             this.AddAccelGroup(w1.AccelGroup);
             this.Name = "TuxMate.MainWindow";
@@ -129,7 +134,7 @@ namespace TuxMate {
             this.vbox.Name = "vbox";
             this.vbox.Spacing = 2;
             // Container child vbox.Gtk.Box+BoxChild
-            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='UndoAction'/><menuitem action='RedoAction'/><separator/><menuitem action='CutAction'/><menuitem action='CopyAction'/><menuitem action='PasteAction'/><separator/><menuitem action='PreferencesAction'/><menuitem/></menu><menu action='ViewAction'/><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
+            w1.AddUiFromString("<ui><menubar name='menuBar'><menu action='FileAction'><menuitem action='NewAction'/><menuitem action='OpenAction'/><menuitem action='SaveAction'/><menuitem action='SaveAsAction'/><separator/><menuitem action='CloseAction'/><menuitem action='QuitAction'/></menu><menu action='EditAction'><menuitem action='UndoAction'/><menuitem action='RedoAction'/><separator/><menuitem action='CutAction'/><menuitem action='CopyAction'/><menuitem action='PasteAction'/><separator/><menuitem action='PreferencesAction'/><menuitem/></menu><menu action='ViewAction'><menuitem action='ShowLineNumbersAction'/></menu><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
             this.menuBar = ((Gtk.MenuBar)(w1.GetWidget("/menuBar")));
             this.menuBar.Name = "menuBar";
             this.vbox.Add(this.menuBar);
@@ -169,6 +174,7 @@ namespace TuxMate {
             this.AboutAction.Activated += new System.EventHandler(this.OnAboutActionActivated);
             this.UndoAction.Activated += new System.EventHandler(this.OnUndoActionActivated);
             this.RedoAction.Activated += new System.EventHandler(this.OnRedoActionActivated);
+            this.ShowLineNumbersAction.Activated += new System.EventHandler(this.OnShowLineNumbersActionActivated);
         }
     }
 }

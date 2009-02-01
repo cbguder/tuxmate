@@ -25,6 +25,18 @@ namespace TuxMate
 		private static string KEY_BASE = "/apps/tuxmate";
 		private static GConf.Client client = new GConf.Client();
 
+		public static bool ShowLineNumbers
+		{
+			get	{
+				try {
+					return (bool)client.Get(KEY_BASE + "/show_line_numbers");
+				} catch {
+					return true;
+				}
+			}
+			set { client.Set(KEY_BASE + "/show_line_numbers", value); }
+		}
+
 		public static bool HighlightCurrentLine
 		{
 			get	{
