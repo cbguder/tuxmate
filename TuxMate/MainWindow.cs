@@ -55,6 +55,7 @@ namespace TuxMate
 			this.OnGConfChanged(null, null);
 
 			buffer.Changed += new System.EventHandler(this.OnBufferChanged);
+			buffer.MarkSet += new MarkSetHandler(this.OnBufferMarkSet);
 
 			scrolledwindow.Add(textView);
 			scrolledwindow.ShowAll();
@@ -267,11 +268,25 @@ namespace TuxMate
 		{
 			this.UndoAction.Sensitive = buffer.CanUndo;
 			this.RedoAction.Sensitive = buffer.CanRedo;
+
+			UpdateStatusbar();
 		}
 
 		protected virtual void OnShowLineNumbersActionActivated(object sender, System.EventArgs e)
 		{
 			Preferences.ShowLineNumbers = ShowLineNumbersAction.Active;
+		}
+
+		protected virtual void OnBufferMarkSet(object sender, MarkSetArgs e)
+		{
+			UpdateStatusbar();
+		}
+
+		protected void UpdateStatusbar()
+		{
+			TextIter iter = buffer.GetIterAtMark(buffer.InsertMark);
+			string msg = String.Format("Line: {0}, Column: {1}", iter.Line + 1, iter.LineOffset + 1);
+			statusbar.Push(0, msg);
 		}
 	}
 }
