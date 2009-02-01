@@ -52,15 +52,15 @@ namespace TuxMate
 			textView = new SourceView(buffer);
 			textView.TabWidth = 4;
 
-			this.OnGConfChanged(null, null);
+			OnGConfChanged(null, null);
 
-			buffer.Changed += new System.EventHandler(this.OnBufferChanged);
-			buffer.MarkSet += new MarkSetHandler(this.OnBufferMarkSet);
+			buffer.Changed += new EventHandler(OnBufferChanged);
+			buffer.MarkSet += new MarkSetHandler(OnBufferMarkSet);
 
 			scrolledwindow.Add(textView);
 			scrolledwindow.ShowAll();
 
-			this.Focus = textView;
+			Focus = textView;
 			originalBuffer = "";
 			NewFile();
 		}
@@ -266,8 +266,8 @@ namespace TuxMate
 
 		protected virtual void OnBufferChanged(object sender, System.EventArgs e)
 		{
-			this.UndoAction.Sensitive = buffer.CanUndo;
-			this.RedoAction.Sensitive = buffer.CanRedo;
+			UndoAction.Sensitive = buffer.CanUndo;
+			RedoAction.Sensitive = buffer.CanRedo;
 
 			UpdateStatusbar();
 		}

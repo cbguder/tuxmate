@@ -27,9 +27,9 @@ namespace TuxMate
 
 		public PreferencesDialog()
 		{
-			this.Build();
+			Build();
 			Preferences.AddNotify(new GConf.NotifyEventHandler(OnGConfChanged));
-			this.OnGConfChanged(null, null);
+			OnGConfChanged(null, null);
 		}
 
 		protected void OnGConfChanged(object sender, System.EventArgs e)
