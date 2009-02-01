@@ -129,7 +129,7 @@ namespace TuxMate
 		{
 			try {
 				System.IO.FileStream fs = new FileStream(path, FileMode.Create);
-				StreamWriter sw = new StreamWriter(fs);
+				StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.GetEncoding(Preferences.FileEncoding));
 				sw.Write(textView.Buffer.Text);
 				if(!textView.Buffer.Text.EndsWith(Environment.NewLine))
 					sw.Write(Environment.NewLine);
