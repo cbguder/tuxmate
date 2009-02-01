@@ -31,7 +31,7 @@ namespace TuxMate
 				try {
 					return (bool)client.Get(KEY_BASE + "/show_line_numbers");
 				} catch {
-					return true;
+					return false;
 				}
 			}
 			set { client.Set(KEY_BASE + "/show_line_numbers", value); }
