@@ -25,141 +25,89 @@ namespace TuxMate
 		private static string KEY_BASE = "/apps/tuxmate";
 		private static GConf.Client client = new GConf.Client();
 
-		public static bool ShowLineNumbers
+		private static object Get(string key, object def)
 		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/show_line_numbers");
-				} catch {
-					return false;
-				}
+			try {
+				return client.Get(KEY_BASE + "/" + key);
+			} catch {
+				return def;
 			}
-			set { client.Set(KEY_BASE + "/show_line_numbers", value); }
 		}
 
-		public static bool HighlightCurrentLine
+		private static void Set(string key, object val)
 		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/highlight_current_line");
-				} catch {
-					return false;
-				}
-			}
-			set { client.Set(KEY_BASE + "/highlight_current_line", value); }
-		}
-
-		public static bool ShowRightMarginIndicator
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/show_right_margin_indicator");
-				} catch {
-					return false;
-				}
-			}
-			set { client.Set(KEY_BASE + "/show_right_margin_indicator", value); }
-		}
-
-		public static bool HighlightRightMargin
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/highlight_right_margin");
-				} catch {
-					return false;
-				}
-			}
-			set { client.Set(KEY_BASE + "/highlight_right_margin", value); }
-		}
-
-		public static bool DisplayGroupsAndFoldersInBold
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/display_groups_and_folders_in_bold");
-				} catch {
-					return false;
-				}
-			}
-			set { client.Set(KEY_BASE + "/display_groups_and_folders_in_bold", value); }
-		}
-
-		public static bool ReindentPastedText
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/reindent_pasted_text");
-				} catch {
-					return true;
-				}
-			}
-			set { client.Set(KEY_BASE + "/reindent_pasted_text", value); }
-		}
-
-		public static bool AutoPairCharacters
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/autopair_characters");
-				} catch {
-					return true;
-				}
-			}
-			set { client.Set(KEY_BASE + "/autopair_characters", value); }
-		}
-
-		public static bool UseSystemFont
-		{
-			get	{
-				try {
-					return (bool)client.Get(KEY_BASE + "/use_system_font");
-				} catch {
-					return true;
-				}
-			}
-			set { client.Set(KEY_BASE + "/use_system_font", value); }
-		}
-
-		public static string Font
-		{
-			get {
-				try {
-					return (string)client.Get(KEY_BASE + "/font");
-				} catch {
-					return "monospace 10";
-				}
-			}
-			set { client.Set(KEY_BASE + "/font", value); }
-		}
-
-		public static string FileEncoding
-		{
-			get {
-				try {
-					return (string)client.Get(KEY_BASE + "/file_encoding");
-				} catch {
-					return "utf-8";
-				}
-			}
-			set { client.Set(KEY_BASE + "/file_encoding", value); }
-		}
-
-		public static string LineEndings
-		{
-			get {
-				try {
-					return (string)client.Get(KEY_BASE + "/line_endings");
-				} catch {
-					return "<LF>";
-				}
-			}
-			set { client.Set(KEY_BASE + "/line_endings", value); }
+			client.Set(KEY_BASE + "/" + key, val);
 		}
 
 		public static void AddNotify(GConf.NotifyEventHandler notify)
 		{
 			client.AddNotify(KEY_BASE, notify);
+		}
+
+		public static bool ShowLineNumbers
+		{
+			get	{ return (bool)Get("show_line_numbers", false); }
+			set { Set("show_line_numbers", value); }
+		}
+
+		public static bool HighlightCurrentLine
+		{
+			get	{ return (bool)Get("highlight_current_line", false); }
+			set { Set("highlight_current_line", value); }
+		}
+
+		public static bool ShowRightMarginIndicator
+		{
+			get	{ return (bool)Get("show_right_margin_indicator", false); }
+			set { Set("show_right_margin_indicator", value); }
+		}
+
+		public static bool HighlightRightMargin
+		{
+			get	{ return (bool)Get("highlight_right_margin", false); }
+			set { Set("highlight_right_margin", value); }
+		}
+
+		public static bool DisplayGroupsAndFoldersInBold
+		{
+			get	{ return (bool)Get("display_groups_and_folders_in_bold", false); }
+			set { Set("display_groups_and_folders_in_bold", value); }
+		}
+
+		public static bool ReindentPastedText
+		{
+			get	{ return (bool)Get("reindent_pasted_text", true); }
+			set { Set("reindent_pasted_text", value); }
+		}
+
+		public static bool AutoPairCharacters
+		{
+			get	{ return (bool)Get("autopair_characters", true); }
+			set { Set("autopair_characters", value); }
+		}
+
+		public static bool UseSystemFont
+		{
+			get	{ return (bool)Get("use_system_font", true); }
+			set { Set("use_system_font", value); }
+		}
+
+		public static string Font
+		{
+			get { return (string)Get("font", "monospace 10"); }
+			set { Set("font", value); }
+		}
+
+		public static string FileEncoding
+		{
+			get { return (string)Get("file_encoding", "utf-8"); }
+			set { Set("file_encoding", value); }
+		}
+
+		public static string LineEndings
+		{
+			get { return (string)Get("line_endings", "<LF>"); }
+			set { Set("line_endings", value); }
 		}
 	}
 }
